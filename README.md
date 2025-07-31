@@ -2,38 +2,39 @@
 
 개발용 맥에서 사용하는 mysql 설정.
 
-## my.cnf 세팅
+## my.cnf 연결
 
     $ cd /opt/homebrew/etc
     $ mv my.cnf my.cnf.org
     $ ln -s $HOME/project/mysql-conf-mac/my.cnf .
 
-## 사이트 활성화
+## 기초 명령들
 
-sites/enabled 디렉토리에 심볼릭 링크를 만들고/삭제하는 식으로 사이트를 켜고 끈다.
+mysqld 시작.
 
-abc.conf 를 사용하는 사이트를 활성화 하려면.
+    $ mysqld
 
-    $ ln -s ../abc.conf sites/enabled
+    ^\   <-- 중지하려면 ^C 대신 ^\
 
-    $ nginx -s reload
+root 로 접속.
 
-## nginx 실행
+    $ mysql -u root
 
-nginx daemon 모드 끄고 실행.
+db 목록.
 
-    $ nginx -g "daemon off;"
+    mysql> show databases;
 
-nginx.conf 수정 후 테스트.
+관리자 추가.
 
-    $ nginx -t
+    $ mysql -u root
+    
+    CREATE USER 'drypot'@'%' IDENTIFIED BY '';
+    GRANT ALL PRIVILEGES ON *.* TO 'drypot'@'%' WITH GRANT OPTION;
+    FLUSH PRIVILEGES;
+    quit
 
-nginx 데몬으로 돌고 있을 때, nginx.conf 리로딩.
+    $ mysql -u drypot
 
-    $ nginx -s reload 
+사용할 디비 선택.
 
-## 기타
-
-자세한 내용은 아래를 참고.
-
-<https://github.com/drypot/web-memo>
+    mysql> use {db name}
